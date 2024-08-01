@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "755468478730",
+    "project_id": "androidsocialmediaapp-68d13",
+    "storage_bucket": "androidsocialmediaapp-68d13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755468478730:android:94bac8163997f3b39f32f3",
+        "android_client_info": {
+          "package_name": "com.example.storyapp3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWd0ClhSuJTKPlCo-zCYB1b3rSEwnphJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

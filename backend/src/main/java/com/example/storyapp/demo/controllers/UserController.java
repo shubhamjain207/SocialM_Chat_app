@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.storyapp.demo.entities.Message;
+import com.example.storyapp.demo.entities.Photos;
+import com.example.storyapp.demo.entities.PublicPhoto;
 import com.example.storyapp.demo.entities.PublicUser;
 import com.example.storyapp.demo.services.UserService;
 
@@ -33,6 +35,14 @@ public class UserController {
        return message;
     }
 
+    @PostMapping("/uploadPhoto")
+    public ResponseEntity<Photos> uploadPhoto(@RequestBody Map<String, String> requestData) {
+       ResponseEntity<Photos> photo = userService.uploadPhoto(requestData.get("photoUrl"));
+       return photo;
+    }
+
+
+
     @GetMapping("/getAllUsers")
     public List<PublicUser> getAllUsers(){
         
@@ -41,6 +51,17 @@ public class UserController {
 
 
     }
+
+
+    @GetMapping("/getAllPhotos")
+    public List<PublicPhoto> getAllPhotos(){
+        
+        List<PublicPhoto> list = userService.getAllPhotos();
+        return list;
+
+
+    }
+
 
     @GetMapping("/getSendersAndReceiverMessages")
     public List<Message> getSendersAndReceiverMessages(@RequestParam String sender,@RequestParam String receiver){

@@ -22,17 +22,34 @@ data class UserSignInInformation(
     val password: String,
 )
 
+data class UploadPhotoInformation(
+    val photoUrl:String
+)
+
 data class UserSignInResponse(
     val user:UserSignInInformation,
     val message:String
 )
 
+data class UploadPhotoResponse(
+    val message:String
+)
+
+
 data class PublicUser(
     val username: String
 )
 
+data class PublicPhoto(
+    val photoUrl: String
+)
+
 data class AllUsers(
     val userList:List<PublicUser>,
+)
+
+data class AllPhotos(
+    val photoList:List<PublicPhoto>,
 )
 
 data class MessageResponse(
@@ -64,9 +81,18 @@ interface API {
         @Body signInInformation: UserSignInInformation
     ):Response<UserSignInResponse>
 
+    @POST("user/uploadPhoto")
+    suspend fun uploadPhoto(
+        @Body uploadPhotoInformation: UploadPhotoInformation
+    ):Response<UploadPhotoResponse>
+
     @GET("user/getAllUsers")
     suspend fun getAllUsers(
     ):Response<List<PublicUser>>
+
+    @GET("user/getAllPhotos")
+    suspend fun getAllPhotos(
+    ):Response<List<PublicPhoto>>
 
     @POST("user/sendMessage")
     suspend fun sendMessage(

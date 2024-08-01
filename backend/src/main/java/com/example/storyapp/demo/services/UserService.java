@@ -20,10 +20,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.storyapp.demo.entities.Message;
+import com.example.storyapp.demo.entities.Photos;
+import com.example.storyapp.demo.entities.PublicPhoto;
 import com.example.storyapp.demo.entities.PublicUser;
 import com.example.storyapp.demo.entities.Role;
+import com.example.storyapp.demo.entities.UploadPhotoDto;
 import com.example.storyapp.demo.entities.User;
 import com.example.storyapp.demo.repos.MessageRepo;
+import com.example.storyapp.demo.repos.UploadPhotoRepo;
 import com.example.storyapp.demo.repos.UserRepo;
 
 @Service
@@ -34,6 +38,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     MessageRepo messageRepo;
+
+    @Autowired
+    UploadPhotoRepo uploadPhotoRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,6 +61,25 @@ public class UserService implements UserDetailsService {
 
         return new ResponseEntity<>(message, HttpStatus.OK);
 
+    }
+
+    public ResponseEntity<Photos> uploadPhoto(String photoUrl) {
+
+       // String timeStamp = new SimpleDateFormat("dd/MM/yyyy++HHmm").format(Calendar.getInstance().getTime());
+        String uploadTimeInMilli = String.valueOf(System.currentTimeMillis());
+
+        Photos photo = uploadPhotoRepo.save(new Photos(0,"sj12345",photoUrl, uploadTimeInMilli));
+
+
+        return new ResponseEntity<>(photo, HttpStatus.OK);
+
+    }
+
+
+    public List<PublicPhoto> getAllPhotos(){
+       
+        return uploadPhotoRepo.findPublicPhotos();
+    
     }
 
     public List<PublicUser> getAllUsers(){
