@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +26,12 @@ public class AuthController {
   @Autowired
   private AuthenticationService service;
 
-
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody Map<String, String> requestData) {
         
        ResponseEntity<User> user1 = service.registerUser(requestData.get("username"), requestData.get("email"),requestData.get("password"));
        return user1 ;
 
-     
 
     }
 

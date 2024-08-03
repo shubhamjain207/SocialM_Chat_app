@@ -16,10 +16,12 @@ public class Photos {
 
     private String username;
     private String photoUrl;
+    private String timeUploaded;
+    
     
     public Photos() {
     }
-    private String timeUploaded;
+    
    
 
     public Photos(int photoId, String username, String photoUrl, String timeUploaded) {

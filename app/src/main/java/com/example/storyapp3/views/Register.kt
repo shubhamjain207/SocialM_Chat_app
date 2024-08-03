@@ -212,7 +212,7 @@ fun Register(navController: NavHostController){
 
                     val user = UserSignUpInformation(userName,userEmail,userPassword)
                     viewModel.registerUser(user)
-                    navController.navigate("CHATLIST")
+                    navController.navigate("MAINDASHBOARD")
 
                 }
 

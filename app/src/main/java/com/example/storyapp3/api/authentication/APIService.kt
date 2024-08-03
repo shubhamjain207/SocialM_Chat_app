@@ -23,6 +23,7 @@ data class UserSignInInformation(
 )
 
 data class UploadPhotoInformation(
+    val username:String,
     val photoUrl:String
 )
 
@@ -41,6 +42,7 @@ data class PublicUser(
 )
 
 data class PublicPhoto(
+    val username:String,
     val photoUrl: String
 )
 

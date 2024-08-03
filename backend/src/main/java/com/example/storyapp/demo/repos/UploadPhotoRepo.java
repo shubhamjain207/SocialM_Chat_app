@@ -10,7 +10,7 @@ import com.example.storyapp.demo.entities.PublicPhoto;
 
 public interface UploadPhotoRepo extends JpaRepository<Photos,Integer> {
     
-    @Query("SELECT new com.example.storyapp.demo.entities.PublicPhoto(p.photoUrl) FROM Photos p")
+    @Query("SELECT new com.example.storyapp.demo.entities.PublicPhoto(p.username, p.photoUrl) FROM Photos p")
     public List<PublicPhoto> findPublicPhotos();
 
 }

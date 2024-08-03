@@ -63,12 +63,12 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public ResponseEntity<Photos> uploadPhoto(String photoUrl) {
+    public ResponseEntity<Photos> uploadPhoto(String photoUsername, String photoUrl) {
 
        // String timeStamp = new SimpleDateFormat("dd/MM/yyyy++HHmm").format(Calendar.getInstance().getTime());
         String uploadTimeInMilli = String.valueOf(System.currentTimeMillis());
 
-        Photos photo = uploadPhotoRepo.save(new Photos(0,"sj12345",photoUrl, uploadTimeInMilli));
+        Photos photo = uploadPhotoRepo.save(new Photos(0,photoUsername,photoUrl, uploadTimeInMilli));
 
 
         return new ResponseEntity<>(photo, HttpStatus.OK);

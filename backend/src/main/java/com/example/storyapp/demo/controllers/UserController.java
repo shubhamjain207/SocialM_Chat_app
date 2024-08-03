@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/currentUsername")
+    public String getCurrentUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
 
     @PostMapping("/sendMessage")
     public ResponseEntity<Message> sendMessage(@RequestBody Map<String, String> requestData) {
@@ -37,7 +49,7 @@ public class UserController {
 
     @PostMapping("/uploadPhoto")
     public ResponseEntity<Photos> uploadPhoto(@RequestBody Map<String, String> requestData) {
-       ResponseEntity<Photos> photo = userService.uploadPhoto(requestData.get("photoUrl"));
+       ResponseEntity<Photos> photo = userService.uploadPhoto(requestData.get("username"),requestData.get("photoUrl"));
        return photo;
     }
 
