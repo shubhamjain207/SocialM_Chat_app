@@ -21,6 +21,7 @@ class MainDashboardViewModel:ViewModel() {
     val photoList: StateFlow<List<PublicPhoto>> get() = _photoList
 
 
+
     fun uploadPhoto(photo: UploadPhotoInformation, navController: NavHostController){
         viewModelScope.launch {
             var response = RetrofitInstance.retrofitApi.uploadPhoto(photo)

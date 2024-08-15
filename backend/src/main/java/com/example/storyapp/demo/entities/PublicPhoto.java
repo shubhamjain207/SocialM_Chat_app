@@ -2,7 +2,6 @@ package com.example.storyapp.demo.entities;
 
 public class PublicPhoto {
     
-    
     private String username;
     private String photoUrl;
 

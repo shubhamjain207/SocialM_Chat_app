@@ -142,6 +142,12 @@ fun MainDashboard(navController: NavHostController){
             ) }) {
                 Text(text = "Pick Photo")
             }
+            Button(onClick = {
+                navController.navigate("PROFILEVIEW")
+
+             }) {
+                Text(text = "Profile View")
+            }
 
         }
     }

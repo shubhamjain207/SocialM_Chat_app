@@ -65,6 +65,9 @@ public class UserController {
     }
 
 
+
+
+
     @GetMapping("/getAllPhotos")
     public List<PublicPhoto> getAllPhotos(){
         
@@ -73,6 +76,17 @@ public class UserController {
 
 
     }
+
+    
+    @PostMapping("/getPhotosOfUser")
+    public List<PublicPhoto> getPhotosOfUser(@RequestBody Map<String, String> requestData){
+        
+        List<PublicPhoto> list = userService.getPhotosOfUser(requestData.get("username"));
+        return list;
+
+
+    }
+
 
 
     @GetMapping("/getSendersAndReceiverMessages")

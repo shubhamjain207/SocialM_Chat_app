@@ -96,6 +96,11 @@ interface API {
     suspend fun getAllPhotos(
     ):Response<List<PublicPhoto>>
 
+    @POST("user/getPhotosOfUser")
+    suspend fun getPhotosOfUsers(
+        @Body userInformation: PublicUser
+    ):Response<List<PublicPhoto>>
+
     @POST("user/sendMessage")
     suspend fun sendMessage(
         @Body messageSent: MessageSent

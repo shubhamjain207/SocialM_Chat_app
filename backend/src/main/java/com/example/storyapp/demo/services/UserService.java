@@ -82,6 +82,12 @@ public class UserService implements UserDetailsService {
     
     }
 
+    public List<PublicPhoto> getPhotosOfUser(String username){
+       
+        return uploadPhotoRepo.findPhotosOfUser(username);
+    
+    }
+
     public List<PublicUser> getAllUsers(){
        
         return userRepo.findPublicUsers();
