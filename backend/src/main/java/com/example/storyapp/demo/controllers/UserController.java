@@ -1,5 +1,6 @@
 package com.example.storyapp.demo.controllers;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +73,7 @@ public class UserController {
     public List<PublicPhoto> getAllPhotos(){
         
         List<PublicPhoto> list = userService.getAllPhotos();
+        Collections.reverse(list);
         return list;
 
 
@@ -82,6 +84,7 @@ public class UserController {
     public List<PublicPhoto> getPhotosOfUser(@RequestBody Map<String, String> requestData){
         
         List<PublicPhoto> list = userService.getPhotosOfUser(requestData.get("username"));
+        Collections.reverse(list);
         return list;
 
     }

@@ -84,10 +84,7 @@ fun uploadImage(
         FirebaseStorage.getInstance().getReference().child("Images/${username + "_" + System.currentTimeMillis()}")
     val uploadTask = storageRef.putFile(selectedImageUri)
 
-    Log.i("Check 1 ----------->", "<---checked--->")
-
     uploadTask.addOnSuccessListener { taskSnapshot ->
-        Log.i("Check 2 ----------->", "<---checked--->")
 
         storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
             val photoObj = UploadPhotoInformation(username, downloadUrl.toString())
@@ -109,7 +106,6 @@ fun MainDashboard(navController: NavHostController) {
 
     val usernameObj = PublicUser(username)
 
-
     LaunchedEffect(Unit) {
         while (true) {
             homeViewModel.getAllPhotos()
@@ -124,7 +120,6 @@ fun MainDashboard(navController: NavHostController) {
         }
     }
 
-
     var selectedImageURI by remember {
         mutableStateOf<Uri?>(null)
     }
@@ -138,8 +133,8 @@ fun MainDashboard(navController: NavHostController) {
             Log.i("Picked Image--->", selectedImageURI.toString())
             uploadImage(selectedImageURI!!, homeViewModel, navController, username)
 
-        })
 
+        })
 
     val tabItems = listOf(
         TabItem(
@@ -160,7 +155,6 @@ fun MainDashboard(navController: NavHostController) {
     }
 
     if(selectedTabIndex == 0) {
-
 
     LazyColumn(
         modifier = Modifier
@@ -183,11 +177,27 @@ fun MainDashboard(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(8.dp)
                 ) {
-                    Text(
-                        text = imageInfo.username,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(8.dp)
-                    )
+
+                    Row (modifier = Modifier.fillMaxWidth()){
+
+                        AsyncImage(
+                            alignment = Alignment.Center,
+                            model = "https://firebasestorage.googleapis.com/v0/b/androidsocialmediaapp-68d13.appspot.com/o/profilephoto.png?alt=media&token=276eab1a-0793-45c1-bdc5-a833d5306c1b",
+                            contentDescription = "Image",
+                            modifier = Modifier
+                                .size(30.dp)
+                                .aspectRatio(1f) // Keep aspect ratio for images
+                                .clip(RoundedCornerShape(20.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+
+                        Text(
+                            text = imageInfo.username,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+
 
                     AsyncImage(
                         model = imageInfo.photoUrl,
@@ -220,10 +230,10 @@ fun MainDashboard(navController: NavHostController) {
             }
         }
     }
+
     }
 
     else if(selectedTabIndex == 1){
-
 
         val userPhotoList by profileViewModel.userPhotoList.collectAsState()
 
@@ -231,7 +241,7 @@ fun MainDashboard(navController: NavHostController) {
             Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(top = 40.dp, start = 30.dp, end = 30.dp),
+                .padding(top = 100.dp, start = 30.dp, end = 30.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(35.dp)
         ) {
@@ -253,10 +263,9 @@ fun MainDashboard(navController: NavHostController) {
                     }
                 }
             )
-
         }
-
     }
+
     TabRow(selectedTabIndex = selectedTabIndex) {
         tabItems.forEachIndexed{index, item->
             Tab(selected = index == selectedTabIndex, onClick = {
@@ -272,7 +281,6 @@ fun MainDashboard(navController: NavHostController) {
     }
 
 }
-
 
 data class TabItem(
 
