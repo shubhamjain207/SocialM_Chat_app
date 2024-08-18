@@ -84,11 +84,9 @@ public class UserController {
         List<PublicPhoto> list = userService.getPhotosOfUser(requestData.get("username"));
         return list;
 
-
     }
 
-
-
+    
     @GetMapping("/getSendersAndReceiverMessages")
     public List<Message> getSendersAndReceiverMessages(@RequestParam String sender,@RequestParam String receiver){
         List<Message> list = userService.getSendersAndReceiverMessages(sender,receiver);

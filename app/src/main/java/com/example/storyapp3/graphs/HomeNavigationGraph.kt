@@ -11,7 +11,6 @@ import com.example.storyapp3.views.ChatList
 import com.example.storyapp3.views.ChatRoom
 import com.example.storyapp3.views.Home
 import com.example.storyapp3.views.MainDashboard
-import com.example.storyapp3.views.Profile
 
 fun NavGraphBuilder.homeNavigationGraph(navController: NavHostController) {
     navigation(
@@ -30,9 +29,10 @@ fun NavGraphBuilder.homeNavigationGraph(navController: NavHostController) {
             MainDashboard(navController)
         }
 
-        composable(route = HomeOtherRoutes.ProfileView.route) {
-            Profile(navController)
-        }
+
+//        composable(route = HomeOtherRoutes.ProfileView.route) {
+//            Profile(navController)
+//        }
 
 
         composable(route = HomeOtherRoutes.ChatRoom.route + "/{receiverUsername}",

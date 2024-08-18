@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel: ViewModel() {
 
-    private val _photoList = MutableStateFlow<List<PublicPhoto>>(emptyList())
-    val photoList: StateFlow<List<PublicPhoto>> get() = _photoList
+    private val _userPhotoList = MutableStateFlow<List<PublicPhoto>>(emptyList())
+    val userPhotoList: StateFlow<List<PublicPhoto>> get() = _userPhotoList
 
 
     fun getPhotosOfUsers(userObj: PublicUser) {
@@ -30,7 +30,7 @@ class ProfileViewModel: ViewModel() {
             Log.i("Check1 ==>",response.body().toString())
 
 
-            _photoList.value = response.body() as ArrayList<PublicPhoto>
+            _userPhotoList.value = response.body() as ArrayList<PublicPhoto>
 
         //            if(response.body()!!.message == "Upload Successfull"){
 //                navController.navigate("MAINDASHBOARD")
