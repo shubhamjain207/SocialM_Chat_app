@@ -6,11 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.example.storyapp3.views.ChatList
 import com.example.storyapp3.views.ChatRoom
 import com.example.storyapp3.views.Home
 import com.example.storyapp3.views.MainDashboard
+import com.example.storyapp3.views.PhotoView
 
 fun NavGraphBuilder.homeNavigationGraph(navController: NavHostController) {
     navigation(
@@ -29,10 +31,13 @@ fun NavGraphBuilder.homeNavigationGraph(navController: NavHostController) {
             MainDashboard(navController)
         }
 
-
-//        composable(route = HomeOtherRoutes.ProfileView.route) {
-//            Profile(navController)
-//        }
+        composable(
+            route = HomeOtherRoutes.PhotoView.route + "/{photoId}",  // photoId is the argument
+            arguments = listOf(navArgument("photoId") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val photoId = backStackEntry.arguments?.getString("photoId")
+            PhotoView(navController, photoId)
+        }
 
 
         composable(route = HomeOtherRoutes.ChatRoom.route + "/{receiverUsername}",
@@ -55,5 +60,6 @@ sealed class HomeOtherRoutes(val route: String) {
     object ChatRoom : HomeOtherRoutes(route = "CHATROOM")
     object MainDashboard: HomeOtherRoutes(route = "MAINDASHBOARD")
     object ProfileView: HomeOtherRoutes(route = "PROFILEVIEW")
+    object PhotoView: HomeOtherRoutes(route = "PHOTOVIEW")
 
 }

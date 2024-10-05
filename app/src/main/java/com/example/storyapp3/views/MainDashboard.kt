@@ -41,6 +41,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -73,7 +74,6 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.delay
 
 
-
 fun uploadImage(
     selectedImageUri: Uri,
     viewModel: MainDashboardViewModel,
@@ -96,7 +96,7 @@ fun uploadImage(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainDashboard(navController: NavHostController) {
     val homeViewModel: MainDashboardViewModel = viewModel()
@@ -133,7 +133,6 @@ fun MainDashboard(navController: NavHostController) {
             Log.i("Picked Image--->", selectedImageURI.toString())
             uploadImage(selectedImageURI!!, homeViewModel, navController, username)
 
-
         })
 
     val tabItems = listOf(
@@ -165,6 +164,10 @@ fun MainDashboard(navController: NavHostController) {
     ) {
         items(photoList) { imageInfo ->
             Card(
+                onClick = {
+                            val encodedUrl = Uri.encode(imageInfo.photoUrl)
+                            navController.navigate("PHOTOVIEW" + "/${encodedUrl}")
+                          },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
@@ -206,7 +209,7 @@ fun MainDashboard(navController: NavHostController) {
                             .fillMaxWidth()
                             .aspectRatio(1f) // Keep aspect ratio for images
                             .clip(RoundedCornerShape(8.dp)),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Fit
                     )
                 }
             }
