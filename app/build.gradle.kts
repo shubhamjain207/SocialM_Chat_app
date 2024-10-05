@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+
 android {
     namespace = "com.example.storyapp3"
     compileSdk = 34
@@ -20,6 +21,8 @@ android {
             useSupportLibrary = true
         }
     }
+
+
 
     buildTypes {
         release {
@@ -70,18 +73,18 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-  //  implementation("androidx.navigation:navigation-compose:2.6.0")
-    implementation ("io.coil-kt:coil-compose:2.0.0") // or the latest version
+    //  implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation("io.coil-kt:coil-compose:2.0.0") // or the latest version
 
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    implementation ("io.coil-kt:coil-compose:2.4.0") // Check for the latest version
+    implementation("io.coil-kt:coil-compose:2.4.0") // Check for the latest version
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.google.firebase:firebase-analytics")
-    implementation (platform("com.google.firebase:firebase-bom:26.5.0"))
-    implementation ("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:26.5.0"))
+    implementation("com.google.firebase:firebase-messaging")
     implementation("androidx.navigation:navigation-compose:2.7.7")
-
+    implementation("com.github.CanHub:Android-Image-Cropper:4.0.0")
 }

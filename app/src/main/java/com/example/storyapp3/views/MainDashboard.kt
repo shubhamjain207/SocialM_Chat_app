@@ -130,8 +130,11 @@ fun MainDashboard(navController: NavHostController) {
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             selectedImageURI = uri
-            Log.i("Picked Image--->", selectedImageURI.toString())
-            uploadImage(selectedImageURI!!, homeViewModel, navController, username)
+            var selectedImageURIEncoded = Uri.encode(selectedImageURI.toString());
+
+            //Log.i("Picked Image--->", selectedImageURI.toString())
+            navController.navigate("PHOTOEDITOR" + "/${selectedImageURIEncoded}");
+            //uploadImage(selectedImageURI!!, homeViewModel, navController, username)
 
         })
 

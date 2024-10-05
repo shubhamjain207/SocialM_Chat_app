@@ -12,6 +12,7 @@ import com.example.storyapp3.views.ChatList
 import com.example.storyapp3.views.ChatRoom
 import com.example.storyapp3.views.Home
 import com.example.storyapp3.views.MainDashboard
+import com.example.storyapp3.views.PhotoEditor
 import com.example.storyapp3.views.PhotoView
 
 fun NavGraphBuilder.homeNavigationGraph(navController: NavHostController) {
@@ -39,6 +40,15 @@ fun NavGraphBuilder.homeNavigationGraph(navController: NavHostController) {
             PhotoView(navController, photoId)
         }
 
+        composable(
+            route = HomeOtherRoutes.PhotoEditor.route + "/{photoId}",  // photoId is the argument
+            arguments = listOf(navArgument("photoId") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val photoId = backStackEntry.arguments?.getString("photoId")
+            PhotoEditor(navController, photoId)
+        }
+
+
 
         composable(route = HomeOtherRoutes.ChatRoom.route + "/{receiverUsername}",
 
@@ -61,5 +71,6 @@ sealed class HomeOtherRoutes(val route: String) {
     object MainDashboard: HomeOtherRoutes(route = "MAINDASHBOARD")
     object ProfileView: HomeOtherRoutes(route = "PROFILEVIEW")
     object PhotoView: HomeOtherRoutes(route = "PHOTOVIEW")
+    object PhotoEditor: HomeOtherRoutes(route = "PHOTOEDITOR")
 
 }
