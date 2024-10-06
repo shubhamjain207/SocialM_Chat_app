@@ -174,7 +174,7 @@ fun MainDashboard(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.LightGray,
+                    containerColor = Color(240,248,255,255),
                     contentColor = Color.White
                 )
             ) {
@@ -227,9 +227,12 @@ fun MainDashboard(navController: NavHostController) {
         ) {
             Button(
                 onClick = {
-                    singlePhotoPickerLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
+//                    singlePhotoPickerLauncher.launch(
+//                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+//                    )
+
+                    navController.navigate("PHOTOEDITOR" + "/${"example_URI"}");
+
                 }
             ) {
                 Text(text = "Pick Photo")

@@ -75,7 +75,7 @@ dependencies {
 
     //  implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("io.coil-kt:coil-compose:2.0.0") // or the latest version
-
+    implementation("io.coil-kt:coil-gif:2.2.2")      // Coil GIF support
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation("io.coil-kt:coil-compose:2.4.0") // Check for the latest version
