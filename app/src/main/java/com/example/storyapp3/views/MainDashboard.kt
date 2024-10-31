@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,17 +34,21 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -57,12 +63,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -161,84 +170,101 @@ fun MainDashboard(navController: NavHostController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 100.dp),
+            .background(Color(250, 243, 224))
+            .padding(top = 80.dp),
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(photoList) { imageInfo ->
             Card(
                 onClick = {
-                            val encodedUrl = Uri.encode(imageInfo.photoUrl)
-                            navController.navigate("PHOTOVIEW" + "/${encodedUrl}")
-                          },
-                modifier = Modifier.fillMaxWidth(),
+                    val encodedUrl = Uri.encode(imageInfo.photoUrl)
+                    navController.navigate("PHOTOVIEW/${encodedUrl}")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 26.dp)
+                    .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp)),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(240,248,255,255),
-                    contentColor = Color.White
+                    containerColor = Color(255, 251, 242, 255),
+                    contentColor = Color(50, 50, 50, 255)
                 )
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
+                        .background(Color.White)
+                        .padding(12.dp)
                 ) {
 
-                    Row (modifier = Modifier.fillMaxWidth()){
-
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         AsyncImage(
-                            alignment = Alignment.Center,
                             model = "https://firebasestorage.googleapis.com/v0/b/androidsocialmediaapp-68d13.appspot.com/o/profilephoto.png?alt=media&token=276eab1a-0793-45c1-bdc5-a833d5306c1b",
-                            contentDescription = "Image",
+                            contentDescription = "User profile photo",
                             modifier = Modifier
-                                .size(30.dp)
-                                .aspectRatio(1f) // Keep aspect ratio for images
-                                .clip(RoundedCornerShape(20.dp)),
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(Color.LightGray),
                             contentScale = ContentScale.Crop
                         )
 
+                        Spacer(modifier = Modifier.width(8.dp))
+
                         Text(
                             text = imageInfo.username,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(8.dp)
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                            color = Color.DarkGray
                         )
                     }
 
-
                     AsyncImage(
                         model = imageInfo.photoUrl,
-                        contentDescription = "Image",
+                        contentDescription = "User uploaded image",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(1f) // Keep aspect ratio for images
-                            .clip(RoundedCornerShape(8.dp)),
-                        contentScale = ContentScale.Fit
+                            .aspectRatio(1f)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color.LightGray),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
+
+        }
+    }
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(20.dp)
+            ) {
+                IconButton(
+                    onClick = {
+                        navController.navigate("PHOTOEDITOR/${"example_URI"}")
+                    },
+                    modifier = Modifier
+                        .size(56.dp)
+                        .shadow(8.dp, shape = CircleShape)
+                        .background(Color(224, 122, 95), shape = CircleShape),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Pick Photo",
+                        tint = Color.White,
+                        modifier = Modifier.size(28.dp)
                     )
                 }
             }
         }
-    }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Row(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(20.dp)
-        ) {
-            Button(
-                onClick = {
-//                    singlePhotoPickerLauncher.launch(
-//                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-//                    )
 
-                    navController.navigate("PHOTOEDITOR" + "/${"example_URI"}");
-
-                }
-            ) {
-                Text(text = "Pick Photo")
-            }
-        }
-    }
 
     }
 
@@ -249,33 +275,62 @@ fun MainDashboard(navController: NavHostController) {
         Column(
             Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(top = 100.dp, start = 30.dp, end = 30.dp),
+                .background(Color(250, 243, 224)) // Soft cream background for a warm tone
+                .padding(top = 80.dp, start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(35.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
+            // Username Text
+            Text(
+                modifier = Modifier.padding(20.dp),
+                text = username,
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp),
+                color = Color.DarkGray
+            )
 
-            Text(username);
+            // LazyVerticalGrid for displaying photos
             LazyVerticalGrid(
-                columns = GridCells.Fixed(3), // 2 columns in the grid
+                columns = GridCells.Fixed(3),
                 modifier = Modifier.fillMaxSize(),
-                content = {
-                    items(userPhotoList) { imageid -> // Example: 20 items in the grid
-                        AsyncImage(model = imageid.photoUrl,
-                            contentDescription ="Image",
+                contentPadding = PaddingValues(vertical = 4.dp, horizontal = 2.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(userPhotoList) { imageid ->
+                    Card(
+                        onClick = {
+                            val encodedUrl = Uri.encode(imageid.photoUrl)
+                            navController.navigate("PHOTOVIEW/${encodedUrl}")
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .padding(2.dp)
+                            .background(Color(255, 251, 242))
+                            .shadow(2.dp, RoundedCornerShape(4.dp)),
+                        shape = RoundedCornerShape(4.dp),
+                    ) {
+                        AsyncImage(
+                            model = imageid.photoUrl,
+                            contentDescription = "Image",
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .size(150.dp)
-                                .padding(vertical = 10.dp),
-                            contentScale = ContentScale.Crop,
+                                .fillMaxSize()
+                                .clip(RoundedCornerShape(8.dp)),
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }
-            )
+            }
         }
     }
 
-    TabRow(selectedTabIndex = selectedTabIndex) {
+    TabRow(
+        selectedTabIndex = selectedTabIndex,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(250, 243, 224)), // Background color for TabRow
+        contentColor = Color(224, 122, 95) // Content color for selected tab
+    ) {
         tabItems.forEachIndexed{index, item->
             Tab(selected = index == selectedTabIndex, onClick = {
                 selectedTabIndex = index

@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -65,165 +66,125 @@ import kotlinx.coroutines.launch
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PhotoEditor(navController: NavHostController, photoId:String?) {
+fun PhotoEditor(navController: NavHostController, photoId: String?) {
 
-  //  var image_uri = Uri.decode(photoId);
     val context = LocalContext.current
 
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
-
     val username = ReadDataFromSharedPreferences(LocalContext.current)
-
-    val photoEditorViewModel : PhotoEditorViewModel = viewModel()
-
+    val photoEditorViewModel: PhotoEditorViewModel = viewModel()
     var photoUploadBtn by remember { mutableStateOf<Boolean?>(true) }
 
 
     val imageCropLauncher = rememberLauncherForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             imageUri = result.uriContent
-        }
-        else {
+        } else {
             val exception = result.error
         }
     }
 
-//    if (imageUri != null) {
-//        if (Build.VERSION.SDK_INT < 28) {
-//            bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
-//        }
-//        else {
-//            val source = ImageDecoder.createSource(context.contentResolver, imageUri!!)
-//            bitmap = ImageDecoder.decodeBitmap(source)
-//        }
-//    }
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-
             .fillMaxSize()
-            .background(Color.White)
-            .padding(top = 100.dp)
+            .background(Color(250, 243, 224)
+
+            ), verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally// Soft cream background
     ) {
         if (imageUri != null) {
-//            Image(
-//                bitmap = bitmap?.asImageBitmap()!!,
-//                contentDescription = null,
-//                contentScale = ContentScale.Crop,
-//                modifier = Modifier
-//                    .clip(CircleShape)
-//                    .background(Color.Blue)
-//                    .size(150.dp)
-//                    .border(
-//                        width = 1.dp,
-//                        color = Color.Blue,
-//                    )
-//
-//            )
 
-                AsyncImage(
-      model = imageUri,
-      contentDescription = "Image",
-      modifier = Modifier
-         .clickable {  }
-         .fillMaxWidth()
-,      contentScale = ContentScale.Fit
+            AsyncImage(model = imageUri,
+                contentDescription = "Image",
+                modifier = Modifier
+                    .clickable { },
+                contentScale = ContentScale.Fit
 
-   )
+            )
 
-        }
-        else {
+        } else {
             Image(
                 painter = painterResource(id = R.drawable.uploadphotoplaceholder),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(150.dp)
+                modifier = Modifier.size(150.dp)
 
             )
         }
-    }
-
-//    Column(
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center,
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(bottom = 330.dp, start = 100.dp)
-//    ) {
 
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            if(photoUploadBtn == true) {
+        Box(modifier = Modifier.padding(top = 100.dp)) {
 
+            if (photoUploadBtn == true) {
 
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(20.dp)
-                ) {
-                    Button(
-                        onClick = {
-                            val cropOption =
-                                CropImageContractOptions(uriContent, CropImageOptions().apply {
-                                    cropShape =
-                                        CropImageView.CropShape.RECTANGLE  // Use rectangle shape for Instagram-like cropping
-                                    guidelines =
-                                        CropImageView.Guidelines.ON       // Optional: Show crop guidelines
-                                    aspectRatioX =
-                                        4                         // Set aspect ratio width (4 for 4:5, 1 for square)
-                                    aspectRatioY =
-                                        5                         // Set aspect ratio height (5 for 4:5, 1 for square)
-                                    fixAspectRatio = true
+//            Row(
+//                modifier = Modifier
+//                    .align(Alignment.BottomEnd)
+//                    .padding(20.dp)
+//            ) {
 
-                                })
-                            imageCropLauncher.launch(cropOption)
-                        }
+                if(imageUri == null){
+                    Button(onClick = {
+                        val cropOption = CropImageContractOptions(uriContent, CropImageOptions().apply {
+                            cropShape =
+                                CropImageView.CropShape.RECTANGLE  // Use rectangle shape for Instagram-like cropping
+                            guidelines =
+                                CropImageView.Guidelines.ON       // Optional: Show crop guidelines
+                            aspectRatioX =
+                                4                         // Set aspect ratio width (4 for 4:5, 1 for square)
+                            aspectRatioY =
+                                5                         // Set aspect ratio height (5 for 4:5, 1 for square)
+                            fixAspectRatio = true
+
+                        })
+                        imageCropLauncher.launch(cropOption)
+                    },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(224, 122, 95), // Warm coral background color
+                            contentColor = Color.White // Text color
+                        )
                     ) {
                         Text(text = "Pick Photo")
                     }
+                }else{
+                    Button(onClick = {
 
-                    Button(
-                        onClick = {
+                        if (imageUri == null) {
+                            Toast.makeText(context, "Please pick an image", Toast.LENGTH_LONG).show();
 
-                            if(imageUri == null){
-                                Toast.makeText(context,"Please pick an image",Toast.LENGTH_LONG).show();
+                            return@Button;
+                        }
 
-                                return@Button;
-                            }
+                        photoUploadBtn = false
 
-                            photoUploadBtn = false
+                        val storageRef: StorageReference = FirebaseStorage.getInstance().getReference()
+                            .child("Images/${username + "_" + System.currentTimeMillis()}")
+                        val uploadTask = storageRef.putFile(imageUri!!)
 
-                            val storageRef: StorageReference =
-                                FirebaseStorage.getInstance().getReference()
-                                    .child("Images/${username + "_" + System.currentTimeMillis()}")
-                            val uploadTask = storageRef.putFile(imageUri!!)
+                        uploadTask.addOnSuccessListener { taskSnapshot ->
 
-                            uploadTask.addOnSuccessListener { taskSnapshot ->
+                            storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                                val photoObj = UploadPhotoInformation(username, downloadUrl.toString())
+                                photoEditorViewModel.uploadPhoto(photoObj, navController)
 
-                                storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-                                    val photoObj =
-                                        UploadPhotoInformation(username, downloadUrl.toString())
-                                    photoEditorViewModel.uploadPhoto(photoObj, navController)
-
-                                }.addOnFailureListener { exception ->
-                                    Log.i("Firebase exception---->", exception.toString())
-                                }
+                            }.addOnFailureListener { exception ->
+                                Log.i("Firebase exception---->", exception.toString())
                             }
                         }
+                    },  colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(224, 122, 95), // Warm coral background color
+                        contentColor = Color.White // Text color
+                    )
                     ) {
                         Text(text = "Upload Photo")
                     }
-
-
                 }
-            }
-            else{
+
+                //  }
+            } else {
                 Row(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(30.dp)
+
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier.width(42.dp),
@@ -231,35 +192,11 @@ fun PhotoEditor(navController: NavHostController, photoId:String?) {
                     )
                 }
             }
-      //  }
 
-//        Image(
-//            painter = painterResource(id = R.drawable.ic_launcher_background),
-//            contentDescription = null,
-//            modifier = Modifier
-//                .clip(CircleShape)
-//                .background(Color.Gray)
-//                .size(50.dp)
-//                .padding(10.dp)
-//                .clickable {
-//                    val cropOption = CropImageContractOptions(uriContent, CropImageOptions())
-//                    imageCropLauncher.launch(cropOption)
-//                }
-//
-//        )
+        }
 
     }
 
-//    AsyncImage(
-//      model = image_uri,
-//      contentDescription = "Image",
-//      modifier = Modifier
-//         .clickable {  }
-//         .fillMaxWidth()
-//         .aspectRatio(1f) // Keep aspect ratio for images
-//         .clip(RoundedCornerShape(8.dp)),
-//      contentScale = ContentScale.Fit
-//   )
 
 
 }
